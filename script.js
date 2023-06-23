@@ -22,34 +22,77 @@ function getComputerChoice() {
 
 // Plays one round of Rock, Paper, Scissors
 function playRound(playerSelection, computerSelection) {
-    const formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-
     // Check if there is a tie
-    if (formattedPlayerSelection === computerSelection) {
-        return "You must think like a computer. You tied with " + computerSelection;
-    } else if (formattedPlayerSelection === GameChoices.Rock) {  // Check possibilities against Rock
+    if (playerSelection === computerSelection) {
+        return 0;
+    } else if (playerSelection === GameChoices.Rock) {  // Check possibilities against Rock
         if (computerSelection === GameChoices.Paper) {  // Rock against Paper
-            return "You lost this round! Paper beats Rock"
+            return 1;
         } else if (computerSelection === GameChoices.Scissors) {  // Rock against Scissors
-            return "You win this round! Rock beats Scissors"
+            return 2;
         }
-    } else if (formattedPlayerSelection === GameChoices.Paper) {  // Check possibilities against Paper
+    } else if (playerSelection === GameChoices.Paper) {  // Check possibilities against Paper
         if (computerSelection === GameChoices.Rock) {  // Paper against Rock
-            return "You win this round! Paper beats Rock"
+            return 2;
         } else if (computerSelection === GameChoices.Scissors) {  // Paper against Scissors
-            return "You lose this round! Scissors beats Paper"
+            return 1;
         }
-    } else if (formattedPlayerSelection === GameChoices.Scissors) {  // Check possibilities against Scissors
+    } else if (playerSelection === GameChoices.Scissors) {  // Check possibilities against Scissors
         if (computerSelection === GameChoices.Rock) {  // Scissors against Rock
-            return "You lose this round! Rock beats Scissors"
+            return 1;
         } else if (computerSelection === GameChoices.Paper) { // Scissors against Paper
-            return "You win this round! Scissors beats Paper"
+            return 2;
         }
     } else {  // Check possibility of wrong entry
-        return "Sorry. This is not an option! Please try again."
+        return -1;
     }
 }
 
-const playerSelection = "paper";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+
+// Plays 5 rounds of Rock, Paper, Scissors and shows winner
+function game() {
+    console.log("Welcome to Rock, Paper, Scissors! Let's play!");
+
+    let rounds = 5; // counter for rounds
+    let playerWins = 0; // counter for player wins
+    let computerWins = 0;  // counter for computer wins
+
+    // loop to play five rounds
+    while (rounds > 0) {
+        const computerSelection = getComputerChoice();  // stores the computer's choice
+        const playerSelection = prompt("Please choose Rock, Paper, or Scissors:");  // prompt for the player's choice
+        const formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase(); // format the player's choice
+        
+        // Play round
+        console.log("Rock, Paper, Scissors... Shoot!")
+        let result = playRound(formattedPlayerSelection, computerSelection);
+
+        // Interpret the round results (0 = tie, 1 = player loss, 2 = player win)
+        if (result === 0) {
+            console.log("You must think like a computer. You tied using " + computerSelection);
+        } else if (result === 1) {
+            console.log("You lose this round! " + computerSelection + " beats " + formattedPlayerSelection);
+            computerWins++; // Increase computer win after player loss
+        } else if (result === 2) {
+            console.log("You win this round! " + formattedPlayerSelection + " beats " + computerSelection);
+            playerWins++; // Increase player win after player win
+        } else {
+            console.log("Sorry. This is not an option! Please try again.");
+            rounds++;  // Increase round when wrong option is entered
+        }
+
+        rounds--; // decrease number of rounds
+    }
+
+    // Interpret game results
+    console.log("Game Results!");
+    if (playerWins > computerWins) {
+        console.log("You win! Score: " + playerWins + ":" + computerWins);
+    } else if (playerWins < computerWins) {
+        console.log("You lose! Score: " + playerWins + ":" + computerWins);
+    } else {
+        console.log("You must be as smart as a computer! You tied!");
+    }
+}
+
+game();
