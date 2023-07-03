@@ -4,7 +4,7 @@
     --blue2: #0c2d48;
     --blue3: #2e8bc0;
     --blue4: #b1d4e0;
-    --grey: rgb(235, 235, 235);
+    --gray: rgb(235, 235, 235);
 }
 
 body {
@@ -15,11 +15,17 @@ h1 {
     text-align: center;
     font-size: 70px;
     padding: 16px;
+    color: var(--blue2);
 }
 
-p {
+.score {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     text-align: center;
     padding: 16px;
+    color: var(--gray);
+    font-size: 48px;
 }
 
 .buttons {
@@ -27,7 +33,7 @@ p {
     align-items: center;
     justify-content: center;
     gap: 32px;
-    padding: 16px;
+    padding: 40px;
 }
 
 button {
@@ -43,12 +49,30 @@ button {
     border-width: 5px;
 }
 
+button:hover {
+    background-color: var(--gray);
+    border-color: var(--blue1);
+}
+
 img {
     max-width: 250px;
     max-height: 225px;
     padding: 8px;
 }
 
+label {
+    font-size: 30px;
+    color: var(--blue2);
+    font-weight: bold;
+}
+
 .message {
     text-align: center;
+    font-size: 24px;
+}
+
+.animation {
+    text-align: center;
+    font-size: 32px;
+    color: var(--blue2);
 }

@@ -8,27 +8,38 @@
     </head>
 
     <body>
-        <script src="script.js"></script>
-
         <h1>Rock, Paper, Scissors</h1>
 
-        <p>Rock... Paper... Scissors... Shoot!</p>
+        <div class="animation">Let's Play!</div>
+
+        <div class="score">
+            <div class="player">
+                <div class="player">You</div>
+                <div class="player-wins">0</div>
+            </div>
+            <div class="computer">
+                <div class="computer">Computer</div>
+                <div class="computer-wins">0</div>
+            </div>
+        </div>
 
         <div class="buttons">
             <button>
-                <img id="Rock" src="images/rock.png" alt="rock">
+                <img src="images/rock.png" alt="Rock">
                 <label for="Rock">Rock</label>
             </button>
             <button>
-                <img id="Paper" src="images/paper.png" alt="piece of paper">
+                <img src="images/paper.png" alt="Paper">
                 <label for="Paper">Paper</label>
             </button>
             <button>
-                <img id="Scissors" src="images/scissors.png" alt="pair of scissors">
+                <img src="images/scissors.png" alt="Scissors">
                 <label for="Scissors">Scissors</label>
             </button>
         </div>
 
-        <div class="message">This is the message!</div>
+        <div class="message"></div>
+
+        <script src="script.js"></script>
     </body>
 </html>

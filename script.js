@@ -5,6 +5,35 @@ const GameChoices = {
     Scissors: "Scissors"
 }
 
+// Helper variables
+let computerSelection = "";
+let playerSelection = "";
+let computerWins = 0;
+let playerWins = 0;
+let buttons = document.querySelectorAll("button");
+let winner = false;
+
+function displayResults(result) {
+    // Interpret the round results (0 = tie, 1 = player loss, 2 = player win)
+    let messageHTML = document.querySelector(".message");
+    let computerScoreHTML = document.querySelector(".computer-wins");
+    let playerScoreHTML = document.querySelector(".player-wins");
+
+    if (result === 0) {
+        messageHTML.textContent = "You must think like a computer. You tied using " + computerSelection;
+    } else if (result === 1) {
+        messageHTML.textContent = "You lose this round! " + computerSelection + " beats " + playerSelection;
+        computerWins++; // Increase computer win after player loss
+        computerScoreHTML.textContent = computerWins;
+    } else if (result === 2) {
+        messageHTML.textContent = "You win this round! " + playerSelection + " beats " + computerSelection;
+        playerWins++; // Increase player win after player win
+        playerScoreHTML.textContent = playerWins;
+    } else {
+        messageHTML.textContent = "Sorry. This is not an option! Please try again.";
+    }
+}
+
 // Gets the choice of the computer
 function getComputerChoice() {
     // randomize the choice
@@ -21,82 +50,71 @@ function getComputerChoice() {
 }
 
 // Plays one round of Rock, Paper, Scissors
-function playRound(playerSelection, computerSelection) {
-    // Check if there is a tie
-    console.log("hi");
-    if (playerSelection === computerSelection) {
-        return 0;
-    } else if (playerSelection === GameChoices.Rock) {  // Check possibilities against Rock
-        if (computerSelection === GameChoices.Paper) {  // Rock against Paper
-            return 1;
-        } else if (computerSelection === GameChoices.Scissors) {  // Rock against Scissors
-            return 2;
+function playRound(playerChoice) {
+    computerSelection = getComputerChoice();
+    playerSelection = playerChoice;
+
+    if (!winner) {
+        // Check if there is a tie
+        if (playerSelection === computerSelection) {
+            displayResults(0);
+        } else if (playerSelection === GameChoices.Rock) {  // Check possibilities against Rock
+            if (computerSelection === GameChoices.Paper) {  // Rock against Paper
+                displayResults(1);
+            } else if (computerSelection === GameChoices.Scissors) {  // Rock against Scissors
+                displayResults(2);
+            }
+        } else if (playerSelection === GameChoices.Paper) {  // Check possibilities against Paper
+            if (computerSelection === GameChoices.Rock) {  // Paper against Rock
+                displayResults(2);
+            } else if (computerSelection === GameChoices.Scissors) {  // Paper against Scissors
+                displayResults(1);
+            }
+        } else if (playerSelection === GameChoices.Scissors) {  // Check possibilities against Scissors
+            if (computerSelection === GameChoices.Rock) {  // Scissors against Rock
+                displayResults(1);
+            } else if (computerSelection === GameChoices.Paper) { // Scissors against Paper
+                displayResults(2);
+            }
+        } else {  // Check possibility of wrong entry
+            displayResults(-1);
         }
-    } else if (playerSelection === GameChoices.Paper) {  // Check possibilities against Paper
-        if (computerSelection === GameChoices.Rock) {  // Paper against Rock
-            return 2;
-        } else if (computerSelection === GameChoices.Scissors) {  // Paper against Scissors
-            return 1;
-        }
-    } else if (playerSelection === GameChoices.Scissors) {  // Check possibilities against Scissors
-        if (computerSelection === GameChoices.Rock) {  // Scissors against Rock
-            return 1;
-        } else if (computerSelection === GameChoices.Paper) { // Scissors against Paper
-            return 2;
-        }
-    } else {  // Check possibility of wrong entry
-        return -1;
     }
+    
+    if (computerWins === 5 || playerWins === 5) {
+        checkGameResults();
+    }
+    
+    playAnimation();
 }
 
+function checkGameResults() {
+    let messageHTML = document.querySelector(".message");
 
-const buttons = document.querySelectorAll('.choice');
-console.log(buttons);
-buttons.forEach(button => console.log(button));
+    if (computerWins === 5) {
+        messageHTML.textContent = "YOU LOST!"
+    } else if (playerWins === 5) {
+        messageHTML.textContent = "YOU WIN!"
+    }
+    winner = true;
+}
 
+function playAnimation() {
+    let messageHTML = document.querySelector(".animation");
+    let textAnimation = ["Rock", "Paper", "Scissors", "Shoot!"];
+    let textCounter = 0;
 
-// // Plays 5 rounds of Rock, Paper, Scissors and shows winner
-// function game() {
-//     console.log("Welcome to Rock, Paper, Scissors! Let's play!");
+    let interval = setInterval(() => {
+        messageHTML.textContent = textAnimation[textCounter];
+        textCounter++;
+        if (textCounter >= textAnimation.length) clearInterval(interval);
+    }, 1000);
+}
 
-//     let rounds = 5; // counter for rounds
-//     let playerWins = 0; // counter for player wins
-//     let computerWins = 0;  // counter for computer wins
+// Event listeners
+buttons.forEach(button => button.addEventListener("click", () => {
+    let image = button.querySelector("img");
+    playRound(image.alt);
+}));
 
-//     // loop to play five rounds
-//     while (rounds > 0) {
-//         const computerSelection = getComputerChoice();  // stores the computer's choice
-//         const playerSelection = prompt("Please choose Rock, Paper, or Scissors:");  // prompt for the player's choice
-//         const formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase(); // format the player's choice
-        
-//         // Play round
-//         console.log("Rock, Paper, Scissors... Shoot!")
-//         let result = playRound(formattedPlayerSelection, computerSelection);
-
-//         // Interpret the round results (0 = tie, 1 = player loss, 2 = player win)
-//         if (result === 0) {
-//             console.log("You must think like a computer. You tied using " + computerSelection);
-//         } else if (result === 1) {
-//             console.log("You lose this round! " + computerSelection + " beats " + formattedPlayerSelection);
-//             computerWins++; // Increase computer win after player loss
-//         } else if (result === 2) {
-//             console.log("You win this round! " + formattedPlayerSelection + " beats " + computerSelection);
-//             playerWins++; // Increase player win after player win
-//         } else {
-//             console.log("Sorry. This is not an option! Please try again.");
-//             rounds++;  // Increase round when wrong option is entered
-//         }
-
-//         rounds--; // decrease number of rounds
-//     }
-
-//     // Interpret game results
-//     console.log("Game Results!");
-//     if (playerWins > computerWins) {
-//         console.log("You win! Score: " + playerWins + ":" + computerWins);
-//     } else if (playerWins < computerWins) {
-//         console.log("You lose! Score: " + playerWins + ":" + computerWins);
-//     } else {
-//         console.log("You must be as smart as a computer! You tied!");
-//     }
-// }
+window.onload(playAnimation());
